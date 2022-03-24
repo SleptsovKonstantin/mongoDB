@@ -49,9 +49,10 @@ app.get("/sort", (req, res) => {
 
 app.get("/pagination", (req, res) => {
   const page = req.query.page;
+  const limit = req.query.limit;
   Wall.find()
     .skip(10 * (page - 1))
-    .limit(10)
+    .limit(limit)
     .then((result) => {
       res.send({ data: result });
     });
@@ -59,9 +60,10 @@ app.get("/pagination", (req, res) => {
 
 app.get("/sortPagination", (req, res) => {
   const page = req.query.page;
+  const limit = req.query.limit;
   Wall.find()
     .sort(req.query)
-    .skip(10 * (page - 1).limit(10))
+    .skip(10 * (page - 1).limit(limit))
     .then((result) => {
       res.send({ data: result });
     });
