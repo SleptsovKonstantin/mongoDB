@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
+const { query } = require("express");
 const port = 5000;
 
 app.use(cors());
@@ -30,36 +31,45 @@ app.get("/all", (req, res) => {
 });
 
 app.get("/filter", (req, res) => {
-  Wall.find(req.query).then((result) => {
+  const ageVal = req.query.age;
+  Wall.find({age: ageVal}).then((result) => {
     res.send({ data: result });
   });
 });
 
 app.get("/sort", (req, res) => {
-  Wall.find().sort(req.query).then((result) => {
-    res.send({ data: result });
-  });
+  const textVal = req.query.text;
+  const ageVal = req.query.age;
+  Wall.find()
+    .sort({ text: textVal, age: ageVal })
+    .then((result) => {
+      res.send({ data: result });
+    });
 });
 
 app.get("/pagination", (req, res) => {
   const page = req.query.page;
-  Wall.find().skip(10 * (page - 1)).limit(10).then((result) => {
-    res.send({ data: result });
-  });
+  Wall.find()
+    .skip(10 * (page - 1))
+    .limit(10)
+    .then((result) => {
+      res.send({ data: result });
+    });
 });
 
 app.get("/sortPagination", (req, res) => {
   const page = req.query.page;
-  Wall.find().sort(req.query).skip(10 * (page - 1).limit(10)).then((result) => {
-    res.send({ data: result });
-  });
+  Wall.find()
+    .sort(req.query)
+    .skip(10 * (page - 1).limit(10))
+    .then((result) => {
+      res.send({ data: result });
+    });
 });
 
 app.get("/value", (req, res) => {
-  const filter = ["text", 'age'];
+  const filter = ["text", "age"];
   Wall.find({}, filter).then((result) => {
-    console.log(result);
-    
     res.send({ data: result });
   });
 });
