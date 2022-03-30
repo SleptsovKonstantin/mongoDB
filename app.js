@@ -32,8 +32,16 @@ app.get("/all", (req, res) => {
 
 app.get("/filter", (req, res) => {
   const ageVal = req.query.age;
-  Wall.find({age: ageVal}).then((result) => {
+  Wall.find({ age: ageVal }).then((result) => {
     res.send({ data: result });
+  });
+});
+
+app.post("/filterMany", (req, res) => {
+  const filterText = req.query.text;
+  const filterAge = req.query.age;
+  Wall.find({ text: filterText, age: filterAge }).then((result) => {
+    res.send(result);
   });
 });
 
